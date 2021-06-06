@@ -11,11 +11,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ThreadClient extends Observable implements Runnable {
     private Socket socket;
     private DataInputStream bufferDeEntrada = null;
-    private TextArea log;
 
-    public ThreadClient(Socket socket, TextArea log) {
+    public ThreadClient(Socket socket) {
         this.socket = socket;
-        this.log = log;
     }
 
     public void run() {
@@ -23,7 +21,7 @@ public class ThreadClient extends Observable implements Runnable {
         try {
             bufferDeEntrada = new DataInputStream(socket.getInputStream());
 
-            String st = "";
+            String mensaje = "";
             do {
                 try {
                     Thread.sleep(ThreadLocalRandom.current().nextLong(1000L)+100);
@@ -31,16 +29,15 @@ public class ThreadClient extends Observable implements Runnable {
                     e.printStackTrace();
                 }
                 try {
-                    st = bufferDeEntrada.readUTF();
-                    log.setText(st);
-                    String[] array = st.split(":");
-
+                    mensaje = bufferDeEntrada.readUTF();
+                    String[] datagrama;
+                    datagrama = mensaje.split(":");
                     this.setChanged();
-                    this.notifyObservers(st);
+                    this.notifyObservers(datagrama[1]);
                 } catch (IOException e) {
                     //e.printStackTrace();
                 }
-            }while (!st.equals("FIN"));
+            }while (!mensaje.equals("FIN"));
         } catch (IOException e) {
             e.printStackTrace();
         }
