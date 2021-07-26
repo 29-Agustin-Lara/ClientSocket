@@ -155,7 +155,7 @@ public class Controller implements  Observer, Initializable {
                 }
                 comprobarGanador();
             }else{
-                labelEsperar.setText("Espera tu turno");
+                labelEsperar.setText("No Es Tu Turno");
             }
         }else{
             labelEsperar.setText("Dale reiniciar.");
@@ -211,7 +211,7 @@ public class Controller implements  Observer, Initializable {
     void conectar(){
         try {
             socket = new Socket("192.168.1.68", 3001);
-            labelConectado.setText( "Conectado...");
+            labelConectado.setText( "CONECTADO**:)");
             bufferDeSalida = new DataOutputStream(socket.getOutputStream());
             bufferDeSalida.flush();
             ThreadClient cliente = new ThreadClient(socket);
